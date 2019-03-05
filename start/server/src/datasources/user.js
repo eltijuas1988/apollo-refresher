@@ -1,8 +1,8 @@
-const { DataSource } = require('apollo-datasource');
+const {DataSource} = require('apollo-datasource');
 const isEmail = require('isemail');
 
 class UserAPI extends DataSource {
-  constructor({ store }) {
+  constructor({store}) {
     super();
     this.store = store;
   }
@@ -22,16 +22,17 @@ class UserAPI extends DataSource {
    * have to be. If the user is already on the context, it will use that user
    * instead
    */
-  async findOrCreateUser({ email: emailArg } = {}) {
+  async findOrCreateUser({email: emailArg} = {}) {
     const email =
       this.context && this.context.user ? this.context.user.email : emailArg;
     if (!email || !isEmail.validate(email)) return null;
 
-    const users = await this.store.users.findOrCreate({ where: { email } });
+    const users = await this.store.users.findOrCreate({where: {email}});
+
     return users && users[0] ? users[0] : null;
   }
 
-  async bookTrips({ launchIds }) {
+  async bookTrips({launchIds}) {
     const userId = this.context.user.id;
     if (!userId) return;
 
@@ -40,22 +41,23 @@ class UserAPI extends DataSource {
     // for each launch id, try to book the trip and add it to the results array
     // if successful
     for (const launchId of launchIds) {
-      const res = await this.bookTrip({ launchId });
+      const res = await this.bookTrip({launchId});
       if (res) results.push(res);
     }
 
     return results;
   }
 
-  async bookTrip({ launchId }) {
+  async bookTrip({launchId}) {
     const userId = this.context.user.id;
     const res = await this.store.trips.findOrCreate({
       where: { userId, launchId },
     });
+
     return res && res.length ? res[0].get() : false;
   }
 
-  async cancelTrip({ launchId }) {
+  async cancelTrip({launchId}) {
     const userId = this.context.user.id;
     return !!this.store.trips.destroy({ where: { userId, launchId } });
   }
@@ -70,7 +72,7 @@ class UserAPI extends DataSource {
       : [];
   }
 
-  async isBookedOnLaunch({ launchId }) {
+  async isBookedOnLaunch({launchId}) {
     if (!this.context || !this.context.user) return false;
     const userId = this.context.user.id;
     const found = await this.store.trips.findAll({
