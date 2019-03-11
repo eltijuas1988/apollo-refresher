@@ -8,7 +8,7 @@ import Pages from './pages'
 
 const cache = new InMemoryCache()
 const link = new HttpLink({
-  uri: 'http://localhost:4000/'
+  uri: 'http://localhost:4000/https://server-b1i3gaee6.now.sh',
 })
 const client = new ApolloClient({
   cache,
