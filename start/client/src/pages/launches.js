@@ -27,7 +27,7 @@ const GET_LAUNCHES = gql`
 export default function Launches() {
   return (
     <Query query={GET_LAUNCHES}>
-      {({data, loading, error}) => {
+      {({data, loading, error, fetchMore}) => {
         if (loading) return <Loading/>
         if (error) return <p>Error</p>
 
@@ -40,6 +40,30 @@ export default function Launches() {
                 <LaunchTile key={launch.id} launch={launch}/>
               ))
             }
+
+            {data.launches && data.launches.hasMore && (
+              <Button onClick={() => fetchMore({
+                variables: {
+                  after: data.launches.cursor,
+                },
+                updateQuery: (prev, {fetchMoreResult, ...rest}) => {
+                  if (!fetchMoreResult) return prev
+
+                  return {
+                    ...fetchMoreResult,
+                    launches: {
+                      ...fetchMoreResult.launches,
+                      launches: [
+                        ...prev.launches.launches,
+                        ...fetchMoreResult.launches.launches,
+                      ],
+                    },
+                  }
+                }
+              })}>
+                Load More
+              </Button>
+            )}
           </Fragment>
         )
       }}
