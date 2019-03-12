@@ -5,6 +5,8 @@ const resolvers = require('./resolvers')
 const LaunchAPI = require('./datasources/launch')
 const UserAPI = require('./datasources/user')
 const isEmail = require('isemail')
+require('dotenv').config()
+const ENGINE_API_KEY = process.env.ENGINE_API_KEY
 
 const store = createStore()
 
@@ -27,7 +29,7 @@ const server = new ApolloServer({
     userAPI: new UserAPI({store}),
   }),
   engine: {
-    apiKey: ""
+    apiKey: ENGINE_API_KEY,
   },
 })
 
