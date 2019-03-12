@@ -10,8 +10,6 @@ export const GET_LAUNCH_DETAILS = gql`
     launch(id: $launchId) {
       site
       rocket {
-        id
-        name
         type
       }
       ...LaunchTile
