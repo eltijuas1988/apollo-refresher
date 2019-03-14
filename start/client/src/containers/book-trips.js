@@ -30,16 +30,15 @@ export default function BookTrips({cartItems}) {
         cache.writeData({data: {cartItems: []}})
       }}
     >
-      {(bookTrips, {data, loading, error}) => {
-        if (!data && !data.bookTrips) return null
-
-        return !data.bookTrips.success ?
-          <p data-testid="message">{data.bookTrips.message}</p> :
+      {(bookTrips, {data}) =>
+        data && data.bookTrips && !data.bookTrips.success ? (
+          <p data-testid="message">{data.bookTrips.message}</p>
+        ) : (
           <Button onClick={bookTrips} data-testid="book-button">
             Book All
           </Button>
-        }
-      }}
+        )
+      }
     </Mutation>
   )
 }
