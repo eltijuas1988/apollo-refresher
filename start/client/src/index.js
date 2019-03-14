@@ -8,6 +8,7 @@ import {ApolloProvider, Query} from 'react-apollo'
 import injectStyles from './styles';
 import Pages from './pages'
 import Login from './pages/login'
+import {typeDefs, resolvers} from './resolvers'
 
 const cache = new InMemoryCache()
 const link = new HttpLink({
@@ -19,6 +20,8 @@ const link = new HttpLink({
 const client = new ApolloClient({
   cache,
   link,
+  typeDefs,
+  resolvers,
 })
 
 cache.writeData({
