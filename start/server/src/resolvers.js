@@ -33,7 +33,12 @@ module.exports = {
     }
   },
   Launch: {
-    isBooked: async (launch, _, {dataSources}) => dataSources.userAPI.isBookedOnLaunch({launchId: launch.id})
+    isBooked: async (launch, _, {dataSources}) => dataSources.userAPI.isBookedOnLaunch({launchId: launch.id}),
+    isInCart: (launch, _, {cache}) => {
+      const {cartItems} = cache.readQuery({query: GET_CART_ITEMS})
+
+      return cartItems.includes(launch.id)
+    }
   },
   User: {
     trips: async (_, __, {dataSources}) => {

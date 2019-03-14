@@ -24,6 +24,7 @@ const typeDefs = gql`
     mission: Mission
     rocket: Rocket
     isBooked: Boolean!
+    isInCart: Boolean!
   }
 
   type Rocket {
