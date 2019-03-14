@@ -1,5 +1,5 @@
 import React from 'react'
 
 export default function LogoutButton() {
-  return null
+  return <div>Logout</div>
 }
